@@ -20,10 +20,6 @@ import com.js.tvremote.net.SsdpDiscovery
 import com.js.tvremote.net.TvDevice
 import kotlinx.coroutines.launch
 
-<<<<<<< HEAD
-=======
-@OptIn(ExperimentalMaterial3Api::class)
->>>>>>> main
 @Composable
 fun DiscoverScreen(onDeviceSelected: (TvDevice) -> Unit, onAboutClick: () -> Unit) {
     val context = LocalContext.current
@@ -107,10 +103,7 @@ fun DiscoverScreen(onDeviceSelected: (TvDevice) -> Unit, onAboutClick: () -> Uni
 }
 
 private fun brandLabel(brand: com.js.tvremote.net.Brand): String = when (brand) {
-<<<<<<< HEAD
     com.js.tvremote.net.Brand.ANDROID_TV -> "Android TV / Google TV"
-=======
->>>>>>> main
     com.js.tvremote.net.Brand.ROKU -> "Roku"
     com.js.tvremote.net.Brand.LG_WEBOS -> "LG webOS"
     com.js.tvremote.net.Brand.SAMSUNG -> "Samsung"

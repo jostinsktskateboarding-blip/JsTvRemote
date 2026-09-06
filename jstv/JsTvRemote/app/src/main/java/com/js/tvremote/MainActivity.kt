@@ -1,10 +1,7 @@
 package com.js.tvremote
 
 import android.os.Bundle
-<<<<<<< HEAD
 import androidx.core.view.WindowCompat
-=======
->>>>>>> main
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
@@ -27,11 +24,8 @@ private sealed class Screen {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-<<<<<<< HEAD
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
-=======
->>>>>>> main
 
         AdManager.init(this)
 

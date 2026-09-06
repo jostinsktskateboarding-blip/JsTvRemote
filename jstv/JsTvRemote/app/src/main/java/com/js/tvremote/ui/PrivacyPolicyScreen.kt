@@ -11,10 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-<<<<<<< HEAD
-=======
-@OptIn(ExperimentalMaterial3Api::class)
->>>>>>> main
 @Composable
 fun PrivacyPolicyScreen(onBack: () -> Unit) {
     Scaffold(

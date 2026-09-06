@@ -26,7 +26,6 @@ Los dispositivos detectados como genéricos o DLNA se muestran, pero no se enví
 
 ## Build local
 Usa Android Studio con JDK 17 y Android SDK 36.
-<<<<<<< HEAD
 
 
 ## Android TV / Google TV Remote v2
@@ -36,5 +35,3 @@ This version adds standard `_androidtvremote2._tcp` mDNS discovery and the Andro
 First connection: select the TV, press a remote key, wait for the 6-character hexadecimal code shown on the TV, and enter it in the app. The client certificate is persisted locally so subsequent connections can reuse the pairing identity.
 
 The existing colors and remote icons are preserved. The activity uses edge-to-edge rendering so the UI can use the full phone display.
-=======
->>>>>>> main

@@ -41,10 +41,7 @@ import com.js.tvremote.net.LgWebOsController
 import com.js.tvremote.net.RokuController
 import com.js.tvremote.net.SamsungController
 import com.js.tvremote.net.TvDevice
-<<<<<<< HEAD
 import com.js.tvremote.net.AndroidTvRemote
-=======
->>>>>>> main
 import com.js.tvremote.ui.theme.TvRemoteOkBackground
 import com.js.tvremote.ui.theme.TvRemoteOkBorder
 import com.js.tvremote.ui.theme.TvRemotePill
@@ -55,10 +52,7 @@ import com.js.tvremote.ui.theme.TvRemoteSurface
 import com.js.tvremote.ui.theme.TvRemoteTextPrimary
 import com.js.tvremote.ui.theme.TvRemoteTextSecondary
 import kotlinx.coroutines.launch
-<<<<<<< HEAD
 import kotlinx.coroutines.CompletableDeferred
-=======
->>>>>>> main
 
 @Composable
 fun RemoteScreen(
@@ -72,7 +66,6 @@ fun RemoteScreen(
     val context = LocalContext.current
     var lgController by remember { mutableStateOf<LgWebOsController?>(null) }
     var status by remember { mutableStateOf("Listo") }
-<<<<<<< HEAD
     var androidController by remember { mutableStateOf<AndroidTvRemote?>(null) }
     var showPairDialog by remember { mutableStateOf(false) }
     var pinDeferred by remember { mutableStateOf<CompletableDeferred<String>?>(null) }
@@ -82,10 +75,6 @@ fun RemoteScreen(
             androidController = AndroidTvRemote(context, device)
             status = if (androidController!!.isPaired()) "Listo para conectar" else "Emparejamiento requerido"
         }
-=======
-
-    DisposableEffect(device) {
->>>>>>> main
         if (device.brand == Brand.LG_WEBOS) {
             val prefs = context.getSharedPreferences("tv_remote", Context.MODE_PRIVATE)
             val savedKey = prefs.getString("lg_key_${device.ip}", null)
@@ -98,17 +87,12 @@ fun RemoteScreen(
             lgController = controller
             controller.connect(savedKey)
         }
-<<<<<<< HEAD
         onDispose { lgController?.close(); androidController?.close(); pinDeferred?.cancel() }
-=======
-        onDispose { lgController?.close() }
->>>>>>> main
     }
 
     fun sendKey(action: String) {
         scope.launch {
             when (device.brand) {
-<<<<<<< HEAD
                 Brand.ANDROID_TV -> {
                     val controller = androidController ?: return@launch
                     val key = when (action) {
@@ -134,8 +118,6 @@ fun RemoteScreen(
                     }
                     if (result.isSuccess) onCommandSent() else if (result.exceptionOrNull()?.message != "not paired") status = result.exceptionOrNull()?.message ?: "Error de conexión"
                 }
-=======
->>>>>>> main
                 Brand.ROKU -> {
                     val key = when (action) {
                         "HOME" -> RokuController.Key.HOME
@@ -209,7 +191,6 @@ fun RemoteScreen(
         }
     }
 
-<<<<<<< HEAD
     if (showPairDialog) {
         AlertDialog(
             onDismissRequest = { pinDeferred?.cancel() },
@@ -230,8 +211,6 @@ fun RemoteScreen(
         )
     }
 
-=======
->>>>>>> main
     Scaffold(containerColor = Color.Black) { padding ->
         Column(
             Modifier

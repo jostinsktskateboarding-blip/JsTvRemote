@@ -19,11 +19,7 @@ data class TvDevice(
     val locationUrl: String? = null
 )
 
-<<<<<<< HEAD
 enum class Brand { ANDROID_TV, ROKU, LG_WEBOS, SAMSUNG, GENERIC_DLNA, UNKNOWN }
-=======
-enum class Brand { ROKU, LG_WEBOS, SAMSUNG, GENERIC_DLNA, UNKNOWN }
->>>>>>> main
 
 object SsdpDiscovery {
     private const val SSDP_ADDRESS = "239.255.255.250"
@@ -42,10 +38,7 @@ object SsdpDiscovery {
     suspend fun discover(context: Context, timeoutMs: Int = 3500): List<TvDevice> =
         withContext(Dispatchers.IO) {
             val found = LinkedHashMap<String, TvDevice>()
-<<<<<<< HEAD
             AndroidTvMdnsDiscovery.discover(context, timeoutMs).forEach { found[it.ip] = it }
-=======
->>>>>>> main
             val wifiManager = context.applicationContext.getSystemService(WifiManager::class.java)
             val multicastLock = wifiManager?.createMulticastLock("JsTvRemote-SSDP")?.apply {
                 setReferenceCounted(false)
@@ -81,13 +74,7 @@ object SsdpDiscovery {
                             val stHeader = extractHeader(text, "ST") ?: ""
                             val friendlyName = locationUrl?.let(::fetchFriendlyName) ?: ip
                             val brand = guessBrand(serverHeader, friendlyName, stHeader, locationUrl ?: "")
-<<<<<<< HEAD
                             found.putIfAbsent(ip, TvDevice(friendlyName, ip, brand, locationUrl))
-=======
-                            if (!found.containsKey(ip)) {
-                                found[ip] = TvDevice(friendlyName, ip, brand, locationUrl)
-                            }
->>>>>>> main
                         } catch (_: java.net.SocketTimeoutException) {
                             // Continue receiving until the overall discovery window ends.
                         } catch (_: Exception) {

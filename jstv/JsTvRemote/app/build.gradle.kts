@@ -11,7 +11,6 @@ android {
         applicationId = "com.js.tvremote"
         minSdk = 23
         targetSdk = 36
-<<<<<<< HEAD
         versionCode = 3
         versionName = "1.2.0"
     }
@@ -25,17 +24,6 @@ android {
         if (hasSigningEnv) {
             create("release") {
                 storeFile = file(ksPath!!)
-=======
-        versionCode = 2
-        versionName = "1.1.0"
-    }
-
-    signingConfigs {
-        create("release") {
-            val keystorePath = System.getenv("KEYSTORE_PATH")
-            if (keystorePath != null) {
-                storeFile = file(keystorePath)
->>>>>>> main
                 storePassword = System.getenv("KEYSTORE_PASSWORD")
                 keyAlias = System.getenv("KEY_ALIAS")
                 keyPassword = System.getenv("KEY_PASSWORD")
@@ -45,17 +33,11 @@ android {
 
     buildTypes {
         release {
-<<<<<<< HEAD
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             if (hasSigningEnv) {
                 signingConfig = signingConfigs.getByName("release")
             }
-=======
-            signingConfig = signingConfigs.getByName("release")
-            isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
->>>>>>> main
         }
     }
 
@@ -65,10 +47,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "17"
-<<<<<<< HEAD
-=======
-        freeCompilerArgs += listOf("-Xskip-metadata-version-check")
->>>>>>> main
     }
 
     buildFeatures {
@@ -102,12 +80,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // Google Mobile Ads SDK (latest stable line checked Sep 2026).
-<<<<<<< HEAD
     implementation("org.bouncycastle:bcprov-jdk18on:1.81")
     implementation("org.bouncycastle:bcpkix-jdk18on:1.81")
 
-=======
->>>>>>> main
     implementation("com.google.android.gms:play-services-ads:25.4.0")
     implementation("com.google.android.ump:user-messaging-platform:4.0.0")
 }

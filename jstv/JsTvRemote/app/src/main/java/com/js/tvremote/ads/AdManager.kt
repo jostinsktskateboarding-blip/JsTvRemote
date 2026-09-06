@@ -7,10 +7,6 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.ump.ConsentInformation
-<<<<<<< HEAD
-=======
-import com.google.android.ump.ConsentRequestParameters
->>>>>>> main
 import com.google.android.ump.UserMessagingPlatform
 import androidx.compose.runtime.mutableStateOf
 
@@ -26,19 +22,8 @@ object AdManager {
 
     fun init(activity: Activity) {
         val consentInformation = UserMessagingPlatform.getConsentInformation(activity)
-<<<<<<< HEAD
         consentInformation.requestConsentInfoUpdate(
             activity,
-=======
-
-        val params = ConsentRequestParameters.Builder()
-            .setTagForUnderAgeOfConsent(false)
-            .build()
-
-        consentInformation.requestConsentInfoUpdate(
-            activity,
-            params,
->>>>>>> main
             {
                 UserMessagingPlatform.loadAndShowConsentFormIfRequired(activity) {
                     initializeAdsIfAllowed(activity, consentInformation)

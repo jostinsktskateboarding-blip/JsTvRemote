@@ -12,10 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
-<<<<<<< HEAD
-=======
-@OptIn(ExperimentalMaterial3Api::class)
->>>>>>> main
 @Composable
 fun AboutScreen(
     onBack: () -> Unit,
