@@ -6,10 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-=======
->>>>>>> main
 
     <!-- Android 13+ nearby-device permission for Wi-Fi/local-device workflows. -->
     <uses-permission
