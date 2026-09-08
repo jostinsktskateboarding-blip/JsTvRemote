@@ -35,6 +35,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -68,6 +69,10 @@ kotlin {
         jvmTarget.set(
             org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
         )
+
+        freeCompilerArgs.add(
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api"
+        )
     }
 }
 
@@ -84,7 +89,7 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling")
 
-    // Red local: SSDP/UPnP and TV protocols.
+    // SSDP/UPnP and TV protocols.
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // Bouncy Castle
