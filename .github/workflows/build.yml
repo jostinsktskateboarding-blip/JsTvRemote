@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Descargar código
         uses: actions/checkout@v4
@@ -25,13 +26,13 @@ jobs:
           gradle-version: '8.13'
 
       - name: Lint Android
-        run: gradle lintDebug --no-daemon
+        run: gradle :app:lintDebug --no-daemon
 
       - name: Compilar APK de prueba
-        run: gradle assembleDebug --no-daemon
+        run: gradle :app:assembleDebug --no-daemon
 
       - name: Compilar AAB de release (sin firma)
-        run: gradle bundleRelease --no-daemon
+        run: gradle :app:bundleRelease --no-daemon
 
       - name: Subir APK y AAB
         uses: actions/upload-artifact@v4
