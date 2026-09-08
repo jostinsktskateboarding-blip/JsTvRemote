@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build Android APK and AAB
+    name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
@@ -37,18 +37,41 @@ jobs:
         with:
           gradle-version: '8.13'
 
-      - name: Show tool versions
+      - name: Fix app folder
+        shell: bash
         run: |
-          java -version
-          gradle --version
+          echo "Checking project folders..."
+
+          if [ -d "app 2" ] && [ ! -d "app" ]; then
+            mv "app 2" app
+            echo "Renamed 'app 2' to 'app'."
+          elif [ -d "app" ]; then
+            echo "Folder 'app' already exists."
+          else
+            echo "ERROR: No app folder found."
+            echo "Project contents:"
+            ls -la
+            exit 1
+          fi
 
       - name: Check project
+        shell: bash
         run: |
-          echo "Checking project structure..."
+          echo "Checking required files..."
+
           test -f settings.gradle.kts
           test -f build.gradle.kts
           test -f app/build.gradle.kts
-          echo "Project structure OK"
+
+          echo "Project structure:"
+          find . -maxdepth 2 -type f | sort
+
+          echo "Project structure OK."
+
+      - name: Show Java and Gradle versions
+        run: |
+          java -version
+          gradle --version
 
       - name: Lint
         run: gradle :app:lint --no-daemon --stacktrace
@@ -56,44 +79,11 @@ jobs:
       - name: Build Debug APK
         run: gradle :app:assembleDebug --no-daemon --stacktrace
 
-      - name: Prepare release signing
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          if [ -n "$KEYSTORE_BASE64" ] && \
-             [ -n "$KEYSTORE_PASSWORD" ] && \
-             [ -n "$KEY_ALIAS" ] && \
-             [ -n "$KEY_PASSWORD" ]; then
-
-            echo "Release signing secrets found."
-
-            printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
-
-            echo "KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
-
-          else
-            echo "No release signing secrets configured."
-            echo "Building unsigned release."
-          fi
-
       - name: Build Release APK
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          gradle :app:assembleRelease --no-daemon --stacktrace
+        run: gradle :app:assembleRelease --no-daemon --stacktrace
 
       - name: Build Release AAB
-        env:
-          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          gradle :app:bundleRelease --no-daemon --stacktrace
+        run: gradle :app:bundleRelease --no-daemon --stacktrace
 
       - name: Upload APK and AAB
         uses: actions/upload-artifact@v4
