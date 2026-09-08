@@ -35,7 +35,11 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+
             if (hasSigningEnv) {
                 signingConfig = signingConfigs.getByName("release")
             }
@@ -45,9 +49,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -62,6 +63,14 @@ android {
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(
+            org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+        )
+    }
+}
+
 dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.activity:activity-compose:1.10.1")
@@ -72,15 +81,17 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
+
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // Red local: SSDP/UPnP and TV protocols.
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
-    // Google Mobile Ads SDK (latest stable line checked Sep 2026).
+    // Bouncy Castle
     implementation("org.bouncycastle:bcprov-jdk18on:1.81")
     implementation("org.bouncycastle:bcpkix-jdk18on:1.81")
 
+    // Google Mobile Ads
     implementation("com.google.android.gms:play-services-ads:25.4.0")
     implementation("com.google.android.ump:user-messaging-platform:4.0.0")
 }
