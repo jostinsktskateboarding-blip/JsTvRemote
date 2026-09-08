@@ -1,0 +1,42 @@
+name: Android CI — Js TV Remote
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+
+      - name: Lint Android
+        run: gradle lintDebug --no-daemon
+
+      - name: Compilar APK de prueba
+        run: gradle assembleDebug --no-daemon
+
+      - name: Compilar AAB de release (sin firma)
+        run: gradle bundleRelease --no-daemon
+
+      - name: Subir APK y AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: JsTvRemote-builds
+          path: |
+            app/build/outputs/apk/debug/*.apk
+            app/build/outputs/bundle/release/*.aab
