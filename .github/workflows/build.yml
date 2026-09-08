@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build Android APK/AAB
+    name: Build Android APK and AAB
     runs-on: ubuntu-latest
 
     steps:
@@ -42,33 +42,58 @@ jobs:
           java -version
           gradle --version
 
+      - name: Check project
+        run: |
+          echo "Checking project structure..."
+          test -f settings.gradle.kts
+          test -f build.gradle.kts
+          test -f app/build.gradle.kts
+          echo "Project structure OK"
+
       - name: Lint
         run: gradle :app:lint --no-daemon --stacktrace
 
       - name: Build Debug APK
         run: gradle :app:assembleDebug --no-daemon --stacktrace
 
-      - name: Prepare release signing (optional)
-        if: ${{ secrets.KEYSTORE_BASE64 != '' && secrets.KEYSTORE_PASSWORD != '' && secrets.KEY_ALIAS != '' && secrets.KEY_PASSWORD != '' }}
+      - name: Prepare release signing
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
-          echo "KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+          if [ -n "$KEYSTORE_BASE64" ] && \
+             [ -n "$KEYSTORE_PASSWORD" ] && \
+             [ -n "$KEY_ALIAS" ] && \
+             [ -n "$KEY_PASSWORD" ]; then
+
+            echo "Release signing secrets found."
+
+            printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"
+
+            echo "KEYSTORE_PATH=$RUNNER_TEMP/release.jks" >> "$GITHUB_ENV"
+
+          else
+            echo "No release signing secrets configured."
+            echo "Building unsigned release."
+          fi
 
       - name: Build Release APK
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: gradle :app:assembleRelease --no-daemon --stacktrace
+        run: |
+          gradle :app:assembleRelease --no-daemon --stacktrace
 
       - name: Build Release AAB
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: gradle :app:bundleRelease --no-daemon --stacktrace
+        run: |
+          gradle :app:bundleRelease --no-daemon --stacktrace
 
       - name: Upload APK and AAB
         uses: actions/upload-artifact@v4
